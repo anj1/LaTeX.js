@@ -50,11 +50,22 @@ let generator: HtmlGenerator | null = null
 
 function getGenerator() {
   if (typeof document === 'undefined') return null // SSR
+
+  let img_url;
+  if (typeof window === 'undefined'){
+    img_url = '';
+  } else {
+    img_url = window.location.origin + '/img/baboon.jpg';
+  }
+
   if (!generator) {
     generator = new HtmlGenerator({
       hyphenate: true,
       languagePatterns: en,
-      styles: ['css/error.css']
+      styles: ['css/error.css'],
+      image_urls: {
+        'baboon.jpg': img_url
+      }
     })
   }
   return generator

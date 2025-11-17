@@ -107,12 +107,15 @@ export class HtmlGenerator extends Generator
 
     img:                "img"
 
-    image:              (width, height, url) ~> ~>
+    image:             (width, height, path) ~> ~>
+                            url = @_options.image_urls?[path] or path
                             el = create @img
-                            el.src = url
-                            el.height = height
-                            el.width = width
-
+                            el.setAttribute "src", url
+                            if width?
+                                el.style.width = if width.value? then width.value else String width
+                            if height?
+                                el.style.height = if height.value? then height.value else String height
+                            el
                             return el
 
     picture:            ~> create @inline, "picture"
@@ -137,8 +140,9 @@ export class HtmlGenerator extends Generator
     #  - hyphenate: boolean, enable or disable automatic hyphenation
     #  - languagePatterns: language patterns object to use for hyphenation if it is enabled (default en)
     #    TODO: infer language from LaTeX preamble and load hypenation patterns automatically
-    #  - styles: array with additional CSS stylesheets
-    #  - precision: precision of numbers in CSS and SVG
+    #  - styles: array with additional CSS stylesheets
+    #  - precision: precision of numbers in CSS and SVG
+    #  - image_urls: a dict mapping image paths (from \includegraphics) to actual image URLs
     (options) ->
         @_options = Object.assign {
             documentClass: "article"
@@ -146,6 +150,7 @@ export class HtmlGenerator extends Generator
             hyphenate: true
             languagePatterns: h-en
             precision: 3
+            image_urls: {}
         }, options
 
         if @_options.hyphenate
@@ -393,8 +398,9 @@ export class HtmlGenerator extends Generator
         f = document.createDocumentFragment!
         appendChildren f, children
 
-    createImage: (width, height, url) ->
-        @create @image(width, height, url)
+
+    createImage: (width, height, path) ->
+        @create @image(width, height, path)
 
     createPicture: (size, offset, content) ->
         # canvas

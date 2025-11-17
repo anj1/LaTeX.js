@@ -6,6 +6,8 @@
 \usepackage{calc,pict2e,picture}
 \usepackage{textgreek,textcomp,gensymb,stix}
 
+\usepackage{graphicx}
+
 \setcounter{secnumdepth}{2}
 
 \title{\LaTeX.js Showcase}
@@ -721,6 +723,19 @@ This whole paragraph is emphasized, for instance.
     \textsl{\textsf{beautiful} it bec\large o\Large m\LARGE e\huge s}.
 \end{center}
 
+\section{Image Support Test}
+
+This is a test of the new image feature.
+The LaTeX code requests \texttt{\textbackslash includegraphics\{image.png\}}. The generator is initialized with a map:
+\texttt{ \{ ‘image.png': ‘https://image/url' \}}.
+
+The result should be the image below:
+
+\begin{center}
+\includegraphics[width=200pt]{baboon.jpg}
+\end{center}
+
+If you see this text but no image, something is wrong.
 
 \appendix
 
