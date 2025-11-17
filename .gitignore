@@ -1,5 +1,6 @@
 .uuid
 .vscode
+package-lock.json
 *.stats.html
 /bin/
 /dist/
@@ -9,3 +10,6 @@
 /test/test-results.xml
 /test/screenshots/test-results.xml
 /.nyc_output/
+/.vitepress
+/docs/.vitepress/cache/
+/docs/public/latexjs/
