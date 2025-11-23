@@ -23,6 +23,17 @@ export class LaTeX
 
     # this LaTeX implementation already covers these packages
     providedPackages = <[ calc pspicture picture pict2e keyval comment ]>
+    
+    mathEnvs = <[
+        equation equation*
+        align align*
+        alignat alignat*
+        gather gather*
+        flalign flalign*
+        multline multline*
+        split
+        smallmatrix
+    ]>
 
     _title: null
     _author: null
@@ -32,12 +43,15 @@ export class LaTeX
 
     # CTOR
     (generator, CustomMacros) ->
+        @g = generator
+        
+        for env in mathEnvs
+            @g.addMathEnv env
+
         if CustomMacros
             assignIn this, new CustomMacros(generator)
             assign args, CustomMacros.args
             CustomMacros.symbols?.forEach (value, key) -> symbols.set key, value
-
-        @g = generator
 
         @g.newCounter \secnumdepth
         @g.newCounter \tocdepth
@@ -1315,4 +1329,4 @@ export class LaTeX
     \clearpage          :!->    # prints floats in LaTeX
     \cleardoublepage    :!->
     \vfill              :!->
-    \thispagestyle      : (s) !->
+    \thispagestyle

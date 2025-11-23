@@ -10,7 +10,7 @@ import { Multicol } from './multicol'
 import { Stix } from './stix'
 import { Textcomp } from './textcomp'
 import { Textgreek } from './textgreek'
-
+import { Amsmath } from './amsmath'
 
 export default {
     color: Color,
@@ -25,4 +25,5 @@ export default {
     stix: Stix,
     textcomp: Textcomp,
     textgreek: Textgreek,
+    amsmath: Amsmath
 }

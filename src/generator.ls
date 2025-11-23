@@ -35,6 +35,10 @@ export class Generator
     _resets: null
 
     _marginpars: null
+    
+    # Math parsing support
+    _mathEnvs: null
+    _mathMacros: null
 
     Length: null
 
@@ -48,6 +52,9 @@ export class Generator
 
         @_macros = {}
         @_curArgs = []  # stack of argument declarations
+        
+        @_mathEnvs = new Set()
+        @_mathMacros = {}
 
         # stack for local variables and attributes - entering a group adds another entry,
         # leaving a group removes the top entry
@@ -229,7 +236,21 @@ export class Generator
         @endBalanced!
 
         end
+        
+    
+    ### Math Environments & Macros
+    
+    addMathEnv: (name) !->
+        @_mathEnvs.add name
 
+    isMathEnv: (name) ->
+        @_mathEnvs.has name
+        
+    addMathMacro: (name, def) !->
+        @_mathMacros[name] = def
+        
+    getMathMacros: ->
+        @_mathMacros
 
 
     ### groups

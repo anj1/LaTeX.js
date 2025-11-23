@@ -3,6 +3,10 @@
     var g = options.generator;
     g.setErrorFn(error);
     g.location = location;
+    
+    function isMathEnv(id) {
+        return g.isMathEnv(id);
+    }
 }
 
 
@@ -96,6 +100,7 @@ text "text" =
     )+                                          { return g.createText(p.join("")); }
 
     / linebreak
+    / math_environment
     / (&unskip_macro _)? m:hmode_macro          { return m; }
     / math
 
@@ -790,6 +795,17 @@ environment =
     }
 
 
+// Capture math envs (align, gather, etc. to pass to KaTeX
+math_environment =
+    escape begin begin_group id:identifier &{ return isMathEnv(id); } end_group
+    c:$((!end_math_env .)*)
+    end_math_env
+    {
+        return g.parseMath("\\begin{" + id + "}" + c + "\\end{" + id + "}", true);
+    }
+
+end_math_env =
+    escape end begin_group id:identifier &{ return isMathEnv(id); } end_group
 
 
 

@@ -464,9 +464,19 @@ export class HtmlGenerator extends Generator
 
     parseMath: (math, display) ->
         f = document.createDocumentFragment!
-        katex.render math, f,
-            displayMode: !!display
-            throwOnError: false
+        
+        # Merge global macros with instance specific math macros
+        macros = Object.assign {}, @_mathMacros
+
+        try 
+            @KaTeX.render math, f,
+                displayMode: !!display
+                throwOnError: false
+                macros: macros
+        catch e
+            console.error "KaTeX Error:", e, " in expression: ", math
+            # Fallback text
+            f.appendChild document.createTextNode math
         f
 
 
